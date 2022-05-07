@@ -28,19 +28,17 @@ app.get("/api/hello", function (req, res) {
 
 // listen for requests :)
 var listener = app.listen(3000, function () {
-  console.log('Your app is listening on port ' + listener.address().port);
+  console.log('Your app is listening on port ' + listener.address().port)
 });
 
-let object = {};
-
 const formatTime = (time) => time > 10 ? time : `0${time}`;
-app.get('/api/:input', (req, res) => {
-  const ceva = req.params.input ? req.params.input : Date.now()
-  if (isNaN(req.params.input)) return res.json({ error: "Invalid Date" });
+app.get('/api/:input?', (req, res) => {//face match dupa "/" chiar daca nu exista caracter (?)
+  const ceva = req.params.input ? req.params.input : Date.now();
+  if (new Date(ceva) === "Invalid Date") return res.json({ error: "Invalid Date" });
 
-  const receivedDate = !isNaN(ceva) && parseInt(req.params.input, 10);
+  const receivedDate = isNaN(ceva) ? ceva : parseInt(ceva, 10);//se converteste data in numar (parseInt(parametru,10))in baza 10
 
-  const a = new Date(parseInt(receivedDate, 10))
+  const a = new Date(receivedDate)
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
