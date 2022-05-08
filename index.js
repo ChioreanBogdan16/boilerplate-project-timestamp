@@ -24,18 +24,18 @@ app.get("/api/hello", function (req, res) {
   res.json({ greeting: 'hello API' });
 });
 
-
-
 // listen for requests :)
 var listener = app.listen(3000, function () {
   console.log('Your app is listening on port ' + listener.address().port)
 });
+const isValidDate = (d) => {
+  return (d instanceof Date && !isNaN(d)) || !isNaN(d);// de verificat 
+}
 
 const formatTime = (time) => time > 10 ? time : `0${time}`;
-app.get('/api/:input?', (req, res) => {//face match dupa "/" chiar daca nu exista caracter (?)
-  const ceva = req.params.input ? req.params.input : Date.now();
-  if (new Date(ceva) === "Invalid Date") return res.json({ error: "Invalid Date" });
-
+app.get('/api/:input?', (req, res) => {//face match dupa "/" chiar daca nu exista caracter cu ajutorul semnuli =>(?)
+  const ceva = req.params.input ? req.params.input : Date.now();//corect
+  if (!isValidDate(ceva)) return res.json({ error: "Invalid Date" });//nu valideaza format
   const receivedDate = isNaN(ceva) ? ceva : parseInt(ceva, 10);//se converteste data in numar (parseInt(parametru,10))in baza 10
 
   const a = new Date(receivedDate)
